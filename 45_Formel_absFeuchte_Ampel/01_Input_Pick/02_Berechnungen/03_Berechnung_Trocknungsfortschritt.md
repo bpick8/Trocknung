@@ -23,9 +23,6 @@ mit
 * $n$ : Stoffmenge in Mol <p/>
 * $R_{m}$ : Gaskonstande 8,31446261815324 $\frac{\mathrm{J}}{\mathrm{mol} \ \mathrm{K}}$ <p/>
 * $T$ : Termodynamische Temperatur in Kelvin <p/>
-
-
-
 * $\vartheta$ : Termodynamische Temperatur in °C mit $T = 273{,}15 +  \vartheta$<p/>
 * $\rho$ : Dichte in $\frac{\text{kg}}{\text{m}^3}$
 

@@ -1,0 +1,59 @@
+\section{Exkurs: Tetens-Gleichung bzw. Magnus Gleichung}
+
+Der Partialdruck eines Gases $e$ innerhalb eines Gasgemisches kann durch Umstellung der  \href{https://de.wikipedia.org/wiki/Thermische_Zustandsgleichung_idealer_Gase}{allgemeinen Gasgleichung} 
+\begin{equation}
+    p \cdot V = n \cdot R_{m} \cdot T  \rightarrow   p = \frac{n}{V} \cdot R_m \cdot T
+\end{equation}
+mit folgender Formel näherungsweise berechnet werden:
+\begin{equation}
+    e = \rho \cdot R_m \cdot T
+\end{equation}
+mit
+\begin{itemize}
+    \item  $p$ : Druck $\text{Pa} = \frac{\text{N}}{\text{m}^2} = \frac{J}{\text{m} \cdot \text{m}^2} = \frac{J}{\text{m}^3}$ 
+    \item  $V$: Volumen in $\text{m}^3$ 
+    \item  $n$: Stoffmenge in Mol 
+    \item  $R_{m}$: Gaskonstande 8,31446261815324 $\frac{\mathrm{J}}{\mathrm{mol} \ \mathrm{K}}$ 
+    \item  $T$: Termodynamische Temperatur in Kelvin 
+    \item $\vartheta$: Termodynamische Temperatur in °C mit $T = 273{,}15 +  \vartheta$
+    \item $\rho$ : Dichte in $\frac{\text{kg}}{\text{m}^3}$
+\end{itemize} 
+Für die Dampdichte $\rho_v$ folgt:
+\begin{equation}
+    \rho_v = \frac{p}{R_v \cdot T}
+\end{equation}
+Mit der Gaskonstante für Wasserdampf: $R = 461,52\,\frac{\text{J}}{\text{kg}\,\text{K}}$ und Sättigungsdampfdruck $\rho(T)$ folgt für den Druck  $p$
+\begin{equation}
+    p = \varphi \cdot \rho(T)
+\end{equation}
+
+Damit kann die \textbf{absolute Feuchte} der Luft in $\text{g} / \text{m}^3$ mit der folgenden Formel berechnet werden:
+\begin{equation}
+    \rho_v(\varphi, T) = \frac{\varphi \cdot p_s(T)}{R_v \cdot T_K}
+\end{equation}
+mit 
+\begin{itemize}
+    \item $\varphi$ : relative Luftfeuchtigkeit im Wertebereich $[0 \dots  1]$
+    \item $p_s(T)$ :  Sättigungsdampfdruck in Pa (*saturation*)
+    \item $R_v = 461,52\, \frac{\text{J}}{\text{kg} \cdot \text{K}}$: Gaskonstante für Wasserdampf (*vapor*)
+    \item $T_K = T_{{}^\circ\text{C}} + 273,15\, \text{K}$ : Temperatur in Kelvin
+\end{itemize}
+
+Der Sättigungsdampfdruck $p_s(T)$ kann mit der \href{https://www.chemie.de/lexikon/S%C3%A4ttigungsdampfdruck.html} {\textbf{Tetens-Gleichung} bzw. \textbf{Magnus Gleichung}} approximiert werden:
+\begin{equation}
+    p_s(\vartheta) = 611{,}2\, \text{Pa} \cdot e^{\dfrac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12^\circ\text{C}}}
+\end{equation}
+wobei $\vartheta$ die Temperatur in °C angegeben ist.
+Es gilt: 
+\begin{itemize}
+    \item $-30\,{}^\circ\mathrm{C} \leq 70\,{}^\circ\mathrm{C}$
+    \item $p_s(\vartheta = 0\,{}^\circ\mathrm{C}) = 6{,}11213\;\mathrm{hPa} = 611{,}213\;\mathrm{Pa}$
+\end{itemize}
+
+Die Konstanten variieren in der Literatur, z.\ B.:
+\begin{equation}
+    p_s(\vartheta) 
+    = 
+    611{,}153\, \text{Pa} \cdot e^{\frac{22{,}4433 \cdot \vartheta}{\vartheta + 272{,}186^\circ\text{C}}}
+\end{equation}
+

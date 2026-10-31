@@ -1,0 +1,65 @@
+\section{Berechnung der absoluten Feuchte in \texorpdfstring{$\mathrm{g} / \mathrm{kg}$}{g / kg}} 
+
+%\section{Berechnung der absoluten Feuchte in \textorpdfstring{$\text{g} / \text{kg}$}{g / kg}} 
+
+
+\subsection{Messwerte in der Dämmschichtrocknung}
+Berechnung der absoluten Feuchte aus gemessenen Werten:
+
+\begin{itemize}
+\item \textbf{relative Feuchtigkeit:} rF in Prozent im Wertebereich $[0 .. 100]$
+\item \textbf{Temperatur:} T in °C: 
+\item calcValue: absolute Feuchte aF in $\frac{\mathrm{g}}{\mathrm{kg}}$
+\end{itemize}
+
+In der POLYGON App und in der Apama-Regel in der CoT wird die Berechnug der absoluten Feuchte in $\frac{\mathrm{g}}{\mathrm{kg}}$ wie folgt durchgeführt:
+
+\begin{minted}[
+    bgcolor=gray!10,   % Grauer Hintergrundkasten
+    fontsize=\small,   % Angenehme Schriftgröße
+    breaklines         % Automatischer Zeilenumbruch
+]{java}  
+    const calcValue = ((((rF / 100) * (6.112 * Math.pow(2.7182881, (17.62 * T) / (243.12 + T)) * 100)) / 461.5 / (T + 273)) * 1000) / 1.2
+\end{minted}
+
+\subsection{Herleitung und Analyse der Formel}
+Implementierte Formel:
+\begin{equation}
+    \text{aF}  
+    = \frac{\frac{\frac{\text{rF}}{100} \cdot 6{,}112 \cdot 2{,}7182881^{\frac{17{,}62 \cdot \vartheta}{243{,}12 + \vartheta}} \cdot 100}
+                  {461{,}5 \cdot (\vartheta + 273)} \cdot 1000}
+            {1{,}2} 
+\end{equation}
+
+Schrittweise Vereinfachung:
+\begin{equation}
+    \text{aF}  
+    = \frac{\text{rF} \cdot 6{,}112 \cdot e^{\frac{17{,}62 \cdot \vartheta}{243{,}12 + \vartheta}} }
+            {461{,}5 \cdot (\vartheta + 273)}
+        \cdot \frac{1000}{1,2}
+\end{equation}
+
+Abbilden auf die  \textbf{Tetens-Gleichung} bzw. \textbf{Magnus Gleichung} und anpassen auf die Einheit $\frac{\text{g}}{\text{kg}}$:
+\begin{equation}
+    \text{aF}  
+    = \frac{\text{rF} \cdot 611{,}2\, \frac{\text{J}}{\text{m}^3} \cdot e^{\dfrac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12}}}
+    {461{,}52 \frac{\text{J}}{\text{kg} \cdot \text{K}} \cdot (\vartheta + 273{,}15)\, \text{K}}
+    \cdot \frac{10}{1{,}204\, \frac{\text{kg}}{\text{m}^3}}
+\end{equation}
+mit 
+\begin{itemize}
+    \item $\vartheta$ : Termodynamische Temperatur in \textdegree C mit $T = (273{,}15 +  \vartheta)\, \text{K}$
+    \item Faktor 10: 
+    \begin{itemize}
+        \item Umrechnung Prozent im Wertebereich $[0 \ldots 100]$ in den Wertebereich $[0 \ldots 1]$
+        \item Umrechung der Masse von kg in g 
+    \end{itemize}
+    \item Die Dichte trockener Luft bei bei Standardbedingungen (20 °C auf Meereshöhe: $101{,}3, \text{Pa}$) beträgt $1,204 \frac{\text{kg}}{\text{m}^3}$. 
+\end{itemize}
+
+Die Formel berechnet die absolute Feuchte nicht wie üblich in Gramm pro Kubikmeter ($\mathrm{g/m}^{\mathrm{3}}$), sondern im Mischungsverhältnis Gramm pro Kilogramm trockene Luft ($\mathrm{g/kg}$). Um von der Masse pro Volumen ($\mathrm{m}^{\mathrm{3}}$) auf die Masse pro Luftmasse ($\mathrm{kg}$) zu kommen, muss durch die Dichte der Luft geteilt werden.
+
+Alle Einheiten können gekürzt werden. Es ergibt sich ein Verhältnis der Masse von Wasserdampf zur Masse von trockener Luft. Damit kann die Einheit  $\frac{\text{g}}{\text{kg}}$ gewählt werden.
+
+Damit ist diese Formel gültig für einen Druck von $101{,}3\, \text{Pa}$. Der Druck in der Prozessluft der Dämmschichttrockung wird davon abweichen. Die Größe der Abweichung und deren Einfluss sind zu betrachten.
+

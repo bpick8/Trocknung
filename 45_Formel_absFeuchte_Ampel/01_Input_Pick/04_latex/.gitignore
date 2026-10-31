@@ -1,3 +1,10 @@
 *.aux
 *.log
 *.out
+*.toc
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.minted
+_minted
