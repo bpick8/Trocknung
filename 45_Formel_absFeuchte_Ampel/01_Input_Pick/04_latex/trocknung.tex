@@ -1,14 +1,28 @@
 % scrartcl = moderne, deutsche Artikel-Klasse (Überschriften standardmäßig linksbündig)
-\documentclass[a4paper, 12pt, titlepage, parskip=half, twoside, headinclude, footnotes=bftn]{scrartcl}
+\documentclass[
+        a4paper, 12pt, 
+        titlepage=false, % Erzwingt das kompakte Layout auf Seite 1 (Standard bei scrartcl), 
+        abstract=true,    % Aktiviert die Überschrift "Zusammenfassung"
+        parskip=half, 
+        twoside, 
+        headinclude, 
+        footnotes=bftn
+]{scrartcl}
 
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} % Wichtig für korrekte Silbentrennung bei PostScript-Fonts
 \usepackage[ngerman]{babel} % Für deutsche Rechtschreibung und korrekte Silbentrennung 
 \usepackage{amsmath}
+\usepackage{graphicx} % Zwingend erforderlich für Bilder
 \usepackage{setspace}
 \setstretch{1.14} % Skaliert den Zeilenabstand exakt um den Faktor 1,08
 \usepackage{booktabs}  % Für professionelle Tabellenlinien (\toprule, \midrule, \bottomrule)
 \usepackage{xcolor}
 \definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} % Empfohlene Kompatibilitätseinstellung
+
 
 % ==========================================
 % GLOBALE METADATEN (Hier zentral anpassen!)
@@ -16,7 +30,7 @@
 \newcommand{\mytitle}{Berechnung des Trocknungsfortschritts aus den Messwerten relative Feuchte und Temperatur}
 \newcommand{\myshorttitle}{Berechnung des Trocknungsfortschritts}
 \newcommand{\myauthor}{Burkhard Pick}      % Autor(en) des Dokuments
-\newcommand{\myversion}{Version 0.1}              % Aktuelle Version
+\newcommand{\myversion}{Version 0.2}              % Aktuelle Version
 \newcommand{\mystatus}{Entwurf}            % Status: z.B. Entwurf, Review, Final
 \newcommand{\mydate}{\today}               %
 
@@ -29,7 +43,6 @@
 % MODERNE SCHRIFT FÜR PDFLATEX (Fira Sans)
 % ==========================================
 \usepackage[sfdefault]{FiraSans} %% sfdefault setzt sie als Hauptschrift
-\usepackage[T1]{fontenc} % Wichtig für korrekte Silbentrennung bei PostScript-Fonts
 \usepackage{FiraMono}   %% Passende Festbreitenschrift für Code
 
 \usepackage[
@@ -52,7 +65,7 @@
 
 \usepackage{lastpage}
 % --- KOPFZEILE (Mit Section-Überschrift) ---
-% Da du twoside nutzt, wird die Überschrift außen platziert:
+% Bwi twoside wird die Überschrift außen platziert:
 \lehead{Berechnung des Trocknungsfortschritts} % Überschrift links auf geraden Seiten
 \rohead{Berechnung des Trocknungsfortschritts} % Überschrift rechts auf ungeraden Seiten
 
@@ -83,6 +96,7 @@
 \title{\mytitle}
 \author{\myauthor}
 \date{\mydate}
+\publishers{\myversion{} - \mystatus}
 
 \usepackage[
     colorlinks=true, % Aktiviert farbigen Text statt Rahmen
@@ -95,11 +109,14 @@
 \begin{document}
 \raggedbottom % Schaltet den Blocksatz für die vertikale Seite ab.
 
-\begin{titlepage}
-\maketitle
+\maketitle % Erzeugt den Titelkopf oben auf Seite 1
+
+\begin{abstract}
+    Dieses Dokument beschreibt die Berechnung des Trocknungsfortschritts aus den Messwerten relative Feuchte und Temperatur. Es werden die Berechnungen der absoluten Feuchte, die Anwendung der Tetens-Gleichung, die Berücksichtigung des Luftdrucks und die Berechnung des Ampelstatus erläutert. Ziel ist es, eine fundierte Grundlage für die Bewertung des Trocknungsprozesses zu schaffen und eine klare Darstellung der Ergebnisse zu ermöglichen.
+\end{abstract}
 
 % Enter abstract:
-\end{titlepage}
+
 
 \tableofcontents % Automatisches Inhaltsverzeichnis
 
@@ -108,6 +125,7 @@
 \include{include_02_Berechnung_absFeuchte_Druck}
 \include{include_03_Dämmschichtrocknung}
 \include{include_04_Ampelstatus}
+\include{include_21_Exkurs_Lamesche_Kurve.tex}
 
 \newpage
 % Hier wird das Literaturverzeichnis gedruckt:

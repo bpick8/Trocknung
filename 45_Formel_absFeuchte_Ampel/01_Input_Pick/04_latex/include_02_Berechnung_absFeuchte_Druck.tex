@@ -21,21 +21,21 @@ print(f"Vakuum: {af_vakuum:.2f} g/kg")
 \end{minted}
 Daraus ergibt sich:
 \begin{equation}
-    \text{aF}(\vartheta, \text{rF}, p) = 622 \cdot \frac{\frac{\text{rF}}{100} \cdot 611{,}2 \cdot e^{\frac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12}}}{p - \left(\frac{\text{rF}}{100} \cdot 611{,}2 \cdot e^{\frac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12}}\right)} \quad \left[\frac{\text{g}}{\text{kg}}\right]
+    \text{aF}(\vartheta, rF, p) = 622 \cdot \frac{\frac{rF}{100} \cdot 611{,}2 \cdot e^{\frac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12}}}{p - \left(\frac{rF}{100} \cdot 611{,}2 \cdot e^{\frac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12}}\right)} \quad \left[\frac{\text{g}}{\text{kg}}\right]
 \end{equation}
 Mit  
 \begin{align}
 e_{\text{sat}}(\vartheta) &= 611{,}2 \cdot e^{\frac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12}} \quad [\text{Pa}] \\[4ex]
-e(\vartheta, \text{rF}) &= \frac{\text{rF}}{100} \cdot e_{\text{sat}}(\vartheta) \quad [\text{Pa}]
+e(\vartheta, rF) &= \frac{rF}{100} \cdot e_{\text{sat}}(\vartheta) \quad [\text{Pa}]
 \end{align}
 folgt daraus die kompakte Form der absoluten Feuchte unter Berücksichtigung des Drucks:
 \begin{align}
-\text{aF}(\vartheta, \text{rF}, p) &= 622 \cdot \frac{e(\vartheta, \text{rF})}{p - e(\vartheta, \text{rF})} \quad \left[\frac{\text{g}}{\text{kg}}\right]
+\text{aF}(\vartheta, rF, p) &= 622 \cdot \frac{e(\vartheta, rF)}{p - e(\vartheta, rF)} \quad \left[\frac{\text{g}}{\text{kg}}\right]
 \end{align}
 wobei
 \begin{align*}
 \vartheta &= \text{Temperatur in } ^\circ\text{C} \\[3ex]
-\text{rF} &= \text{Relative Luftfeuchtigkeit in } \% \, (0 \dots 100) \\[3ex]
+rF &= \text{Relative Luftfeuchtigkeit in } \% \, (0 \dots 100) \\[3ex]
 p &= \text{Tatsächlicher Gesamtdruck (Betriebsdruck) in Pa} \\[3ex]
 e_{\text{sat}} &= \text{Sättigungsdampfdruck in Pa} \\[3ex]
 e &= \text{Tatsächlicher Wasserdampfpartialdruck in Pa}

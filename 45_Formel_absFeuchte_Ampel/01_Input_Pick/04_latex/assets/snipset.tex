@@ -1,0 +1,49 @@
+
+\subsection{Berechnung des Ampelstatus}
+Bei der Berechnung des Ampelstatus wird der Absolutwert der Differenz der absoluten Feuchten in der Prozessluft $\text{aF}_p$ (process) und in der Raumluft $\text{aF}_a$ (ambient) gebildet.
+
+\begin{align}
+    \Delta aF
+    &=  \left| aF_p - aF_a \right| 
+    \\[4ex]
+    &=
+    \frac{\text{rF}_p \cdot 611{,}2\, \frac{\text{J}}{\text{m}^3} \cdot e^{\dfrac{17{,}62 \cdot \vartheta_p}{\vartheta_p + 243{,}12}}}
+    {461{,}52 \frac{\text{J}}{\text{kg} \cdot \text{K}} \cdot (\vartheta_p + 273{,}15)\, \text{K}}
+    \cdot \frac{10}{1{,}204\, \frac{\text{kg}}{\text{m}^3}}
+    - 
+    \frac{\text{rF}_a \cdot 611{,}2\, \frac{\text{J}}{\text{m}^3} \cdot e^{\dfrac{17{,}62 \cdot \vartheta_a}{\vartheta_a + 243{,}12}}}
+    {461{,}52 \frac{\text{J}}{\text{kg} \cdot \text{K}} \cdot (\vartheta_a + 273{,}15)\, \text{K}}
+    \cdot \frac{10}{1{,}204\, \frac{\text{kg}}{\text{m}^3}}
+    \\[4ex]
+    &=
+    \left[
+    \text{rF}_p  \cdot
+    \frac{ e^{\dfrac{17{,}62 \cdot \vartheta_p}{\vartheta_p + 243{,}12}}}
+    { (\vartheta_p + 273{,}15)\, \text{K}}
+    - 
+    \text{rF}_a \cdot
+    \frac{ e^{\dfrac{17{,}62 \cdot \vartheta_a}{\vartheta_a + 243{,}12}}}
+    {(\vartheta_a + 273{,}15)\, \text{K}}
+    \right]
+    \cdot \frac{611{,}2\, \frac{\text{J}}{\text{m}^3}}{461{,}52 \frac{\text{J}}{\text{kg} \cdot \text{K}}}
+    \cdot \frac{10}{1{,}204\, \frac{\text{kg}}{\text{m}^3}}
+    \\[4ex]
+     &=
+    \left[
+    \frac{\text{rF}_p}{\vartheta_a + 273{,}15} \cdot
+    e^{f(\vartheta_p)}
+    -
+    \frac{\text{rF}_a}{\vartheta_p + 273{,}15} \cdot
+    e^{f(\vartheta_a)}
+    \right]
+    \cdot \text{Konstante}   
+\end{align}
+
+\subsection{Graphische Darstellung}
+\subsubsection{Ansatz 1}
+2D Plot der Funktion im Intervall $[0 \dots 15]$:
+\begin{equation}
+    \Delta aF
+    =  \left| \text{aF}_p - \text{aF}_a \right|     
+\end{equation}
+

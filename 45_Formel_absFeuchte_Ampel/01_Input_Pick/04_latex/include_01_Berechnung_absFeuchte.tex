@@ -1,10 +1,8 @@
 \section{Berechnung der absoluten Feuchte in \texorpdfstring{$\mathrm{g} / \mathrm{kg}$}{g / kg}} 
 
-%\section{Berechnung der absoluten Feuchte in \textorpdfstring{$\text{g} / \text{kg}$}{g / kg}} 
-
 
 \subsection{Messwerte in der Dämmschichtrocknung}
-Berechnung der absoluten Feuchte aus gemessenen Werten:
+Berechnung der absoluten Feuchte $aF$ aus gemessenen Werten:
 
 \begin{itemize}
 \item \textbf{relative Feuchtigkeit:} rF in Prozent im Wertebereich $[0 .. 100]$
@@ -12,7 +10,7 @@ Berechnung der absoluten Feuchte aus gemessenen Werten:
 \item calcValue: absolute Feuchte aF in $\frac{\mathrm{g}}{\mathrm{kg}}$
 \end{itemize}
 
-In der POLYGON App und in der Apama-Regel in der CoT wird die Berechnug der absoluten Feuchte in $\frac{\mathrm{g}}{\mathrm{kg}}$ wie folgt durchgeführt:
+In der POLYGON App und in der Apama-Regel in der CoT wird die Berechnug der absoluten Feuchte $aF$ (bzw. \mintinline{java}{const} ) in $\frac{\mathrm{g}}{\mathrm{kg}}$ wie folgt durchgeführt:
 
 \begin{minted}[
     bgcolor=gray!10,   % Grauer Hintergrundkasten
@@ -25,24 +23,24 @@ In der POLYGON App und in der Apama-Regel in der CoT wird die Berechnug der abso
 \subsection{Herleitung und Analyse der Formel}
 Implementierte Formel:
 \begin{equation}
-    \text{aF}  
-    = \frac{\frac{\frac{\text{rF}}{100} \cdot 6{,}112 \cdot 2{,}7182881^{\frac{17{,}62 \cdot \vartheta}{243{,}12 + \vartheta}} \cdot 100}
+    aF
+    = \frac{\frac{\frac{rF}{100} \cdot 6{,}112 \cdot 2{,}7182881^{\frac{17{,}62 \cdot \vartheta}{243{,}12 + \vartheta}} \cdot 100}
                   {461{,}5 \cdot (\vartheta + 273)} \cdot 1000}
             {1{,}2} 
 \end{equation}
 
 Schrittweise Vereinfachung:
 \begin{equation}
-    \text{aF}  
-    = \frac{\text{rF} \cdot 6{,}112 \cdot e^{\frac{17{,}62 \cdot \vartheta}{243{,}12 + \vartheta}} }
+    aF
+    = \frac{rF \cdot 6{,}112 \cdot e^{\frac{17{,}62 \cdot \vartheta}{243{,}12 + \vartheta}} }
             {461{,}5 \cdot (\vartheta + 273)}
         \cdot \frac{1000}{1,2}
 \end{equation}
 
 Abbilden auf die  \textbf{Tetens-Gleichung} bzw. \textbf{Magnus Gleichung} und anpassen auf die Einheit $\frac{\text{g}}{\text{kg}}$:
 \begin{equation}
-    \text{aF}  
-    = \frac{\text{rF} \cdot 611{,}2\, \frac{\text{J}}{\text{m}^3} \cdot e^{\dfrac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12}}}
+    aF
+    = \frac{rF \cdot 611{,}2\, \frac{\text{J}}{\text{m}^3} \cdot e^{\dfrac{17{,}62 \cdot \vartheta}{\vartheta + 243{,}12}}}
     {461{,}52 \frac{\text{J}}{\text{kg} \cdot \text{K}} \cdot (\vartheta + 273{,}15)\, \text{K}}
     \cdot \frac{10}{1{,}204\, \frac{\text{kg}}{\text{m}^3}}
 \end{equation}

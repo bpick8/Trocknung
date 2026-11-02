@@ -1,7 +1,6 @@
 \section{Ampelstatus}
 
-\subsection{Ampel Report}
-Ampelreport (prüfen!!):
+\subsection{Die ktuelle Implementierung}
 
 \begin{table}[htbp]
     \centering
@@ -11,59 +10,213 @@ Ampelreport (prüfen!!):
         \toprule
         Status & relative Feuchte & Differenz absolute Feuchte \\
         \midrule
-        Rot  & $\text{rF}_i \ge 65\,\% $       & $\Delta\text{aF} > 3 \frac{\text{g}}{\text{m}^3}$ \\ \addlinespace 
-        Gelb & $65 > \text{rF}_i > 50$         & $\Delta\text{aF} \le 3\,\frac{\text{g}}{\text{m}^3}$ \\ \addlinespace
-        Grün & $50 \ge \text{rF}_i$            & $\Delta\text{aF} \le 2\,\frac{\text{g}}{\text{m}^3}$ \\ \addlinespace
+        Rot  & $rF_i \ge 65\,\% $       & $\Delta aF> 3 \frac{\mathrm{g}}{\mathrm{m}^3}$ \\ \addlinespace 
+        Gelb & $65 > rF_i > 50$         & $\Delta aF\le 3\,\frac{\mathrm{g}}{\mathrm{m}^3}$ \\ \addlinespace
+        Grün & $50 \ge rF_i$            & $\Delta aF\le 2\,\frac{\mathrm{g}}{\mathrm{m}^3}$ \\ \addlinespace
         nicht definiert & sonst                           & sonst \\  \bottomrule
     \end{tabular}
 \end{table}
 
+\begin{figure}[htbp]
+    \centering
+    % trim= links unten rechts oben (Werte anpassen, z.B. in cm, mm oder pt)
+    % clip=true sorgt dafür, dass der abgeschnittene Bereich wirklich gelöscht wird
+    \includegraphics[trim=1cm 14cm 0cm 3cm, clip, width=0.9\textwidth]{assets/Ampelstatus_Trocknung.drawio.pdf}
+    \caption{Graphische Darstellung des aktuell implementiertenAmpelstatus.}
+    \label{fig:bild1}
+\end{figure}
 
-\subsection{Berechnung des Ampelstatus}
-Bei der Berechnung des Ampelstatus wird der Absolutwert der Differenz der absoluten Feuchten in der Prozessluft $\text{aF}_p$ (process) und in der Raumluft $\text{aF}_a$ (ambient) gebildet.
+Es ist leicht zu erkennen, dass es bei dieser Implementierung oft vorkommen kann, dass der Ampelstatus nicht definiert ist. 
 
-\begin{align}
-    \Delta\text{aF} 
-    &=  \left| \text{aF}_p - \text{aF}_a \right| 
-    \\[4ex]
-    &=
-    \frac{\text{rF}_p \cdot 611{,}2\, \frac{\text{J}}{\text{m}^3} \cdot e^{\dfrac{17{,}62 \cdot \vartheta_p}{\vartheta_p + 243{,}12}}}
-    {461{,}52 \frac{\text{J}}{\text{kg} \cdot \text{K}} \cdot (\vartheta_p + 273{,}15)\, \text{K}}
-    \cdot \frac{10}{1{,}204\, \frac{\text{kg}}{\text{m}^3}}
-    - 
-    \frac{\text{rF}_a \cdot 611{,}2\, \frac{\text{J}}{\text{m}^3} \cdot e^{\dfrac{17{,}62 \cdot \vartheta_a}{\vartheta_a + 243{,}12}}}
-    {461{,}52 \frac{\text{J}}{\text{kg} \cdot \text{K}} \cdot (\vartheta_a + 273{,}15)\, \text{K}}
-    \cdot \frac{10}{1{,}204\, \frac{\text{kg}}{\text{m}^3}}
-    \\[4ex]
-    &=
-    \left[
-    \text{rF}_p  \cdot
-    \frac{ e^{\dfrac{17{,}62 \cdot \vartheta_p}{\vartheta_p + 243{,}12}}}
-    { (\vartheta_p + 273{,}15)\, \text{K}}
-    - 
-    \text{rF}_a \cdot
-    \frac{ e^{\dfrac{17{,}62 \cdot \vartheta_a}{\vartheta_a + 243{,}12}}}
-    {(\vartheta_a + 273{,}15)\, \text{K}}
-    \right]
-    \cdot \frac{611{,}2\, \frac{\text{J}}{\text{m}^3}}{461{,}52 \frac{\text{J}}{\text{kg} \cdot \text{K}}}
-    \cdot \frac{10}{1{,}204\, \frac{\text{kg}}{\text{m}^3}}
-    \\[4ex]
-     &=
-    \left[
-    \frac{\text{rF}_p}{\vartheta_a + 273{,}15} \cdot
-    e^{f(\vartheta_p)}
-    -
-    \frac{\text{rF}_a}{\vartheta_p + 273{,}15} \cdot
-    e^{f(\vartheta_a)}
-    \right]
-    \cdot \text{Konstante}   
-\end{align}
+\newpage
 
-\subsection{Graphische Darstellung}
-\subsubsection{Ansatz 1}
-2D Plot der Funktion im Intervall $[0 \dots 15]$:
+\subsection{Neuer Ansatz für eine Implementierung}
+Ziel einer neuen Implementierung ist es, dass der Ampelstatus $A$ immer definiert ist, wenn gültige Messwerte vorliegen.
+
 \begin{equation}
-    \Delta\text{aF} 
-    =  \left| \text{aF}_p - \text{aF}_a \right|     
+    A(rF_i, \Delta aF) 
+    = 
+    \sqrt{\left(\frac{rF_i}{100}\right)^2 + \left(\frac{\Delta aF}{m}\right)^2}
 \end{equation}
 
+Der Parameter $m$ ist ein Gewichtungsfaktor, der die relative Bedeutung der Differenz der absoluten Feuchten $\Delta aF$ im Vergleich zur relativen Feuchte $rF_i$ steuert. Ein höherer Wert von $m$ würde die Differenz der absoluten Feuchten stärker gewichten, während ein niedrigerer Wert die relative Feuchte stärker betont. Der konkrte Wert von $m$ muss empirisch bestimmt werden. Es sollte ein sinnvolles Maximum von $\Delta aF$ sein (z.\ B. $m = 5\frac{\mathrm{g}}{\mathrm{m}^3}$).  
+
+Modifikation mit einer Lamé'schen Kurve (Superellipse) für eine bessere Gewichtung der beiden Parameter:
+\begin{equation}
+    A(rF_i, \Delta aF, p) 
+    = 
+    \sqrt[p]{\left|\frac{rF_i}{100}\right|^{p}+\left|\frac{\Delta aF}{m}\right|^{p}}
+\end{equation}
+
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis lines=middle,
+            xmin=0, xmax=110,
+            ymin=0, ymax=6,
+            xlabel={$rF_i \left[\%\right]$}, ylabel={$\Delta aF \left[\frac{\mathrm{g}}{\mathrm{m}^3}\right]$},
+            %axis equal, % Verhindert Verzerrungen (wichtig für Kreise/Quadrate)
+            %grid=major,
+            %legend pos=outer north east
+            % Hier wird das x-Label nach links und unten verschoben:
+            x label style={
+                at={(axis description cs:1,-0.08)}, % 0 = ganz links, negativ = unterhalb
+                anchor=north west % Richtet den Text sauber aus
+            },
+            % optional fürs y-Label (falls das auch angepasst werden soll):
+            y label style={
+                at={(axis description cs:-0.05,1)}, % negativ = links, 0 = ganz unten
+                anchor=north east
+            }
+        ]
+            % grüne Lamé-Kurve (p = 4) -> Exponent 2/4 = 0.5
+            % Da pgfmath Probleme mit negativen Basen hat, nutzen wir abs()
+            \addplot[
+                green, thick, samples=150, domain=0:90
+            ] (
+                {50 * sign(cos(x)) * abs(cos(x))^(2/4)}, 
+                {2 * sign(sin(x)) * abs(sin(x))^(2/4)}
+            );
+            %\addlegendentry{$p = 4$}
+            
+            % gelbe Lamé-Kurve (p = 4) -> Exponent 2/4 = 0.5
+            % Da pgfmath Probleme mit negativen Basen hat, nutzen wir abs()
+            \addplot[
+                yellow, thick, samples=150, domain=0:90
+            ] (
+                {65 * sign(cos(x)) * abs(cos(x))^(2/4)}, 
+                {3 * sign(sin(x)) * abs(sin(x))^(2/4)}
+            );
+            %\addlegendentry{$p = 4$}
+
+            % rote Lamé-Kurve (p = 4) -> Exponent 2/4 = 0.5
+            % Da pgfmath Probleme mit negativen Basen hat, nutzen wir abs()
+            \addplot[
+                red, thick, samples=150, domain=0:90
+            ] (
+                {100 * sign(cos(x)) * abs(cos(x))^(2/4)}, 
+                {5 * sign(sin(x)) * abs(sin(x))^(2/4)}
+            );
+            %\addlegendentry{$p = 4$}
+            
+            % Punkt einzeichnen (Farbe je nach Wert manuell oder via Script steuerbar)
+            \fill[scale=2, green] (5, 0.3) circle (2pt) node[above right] {(5, 0.3)};
+            \fill[scale=2, yellow] (30, 0.5) circle (2pt) node[above right] {(30, 0.5)};
+            \fill[scale=2, red] (40, 1) circle (2pt) node[above right] {(40, 1)};
+            \fill[scale=2, cyan] (7, 2) circle (2pt) node[above right] {(7, 2)};
+
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Visualisierung der Lamé'schen Kurve für Exponente $p = 4$.}
+\end{figure}
+
+
+\begin{table}[htbp]
+    \centering
+    \caption{Übersicht der der Ampelstatus} % Optional: Tabellenüberschrift
+    \label{tab:ampelstatus}                  % Optional: Label für Verweise
+    \begin{tabular}{lll}
+        \toprule
+        Status & relative Feuchte & Differenz absolute Feuchte \\
+        \midrule
+        grün  &  $A(rF_i, \Delta aF, p) $       &   \\ \addlinespace 
+        gelb  &  $A(rF_i, \Delta aF, p) $       &   \\ \addlinespace
+        rot   &  $A(rF_i, \Delta aF, p) $       &   \\ \addlinespace
+        nicht definiert &                       &  \\  \bottomrule
+    \end{tabular}
+\end{table}
+
+
+
+
+
+Um zu bestimmen, ob ein Punkt \((x, y)\) innerhalb, auf oder außerhalb einer bestimmten Lamé'schen Kurve liegt, nutzt man direkt die Definitionsgleichung der Kurve.
+Für eine zentrierte Standard-Lamé-Kurve mit den Halbachsen \(a\) (Breite) und \(b\) (Höhe) sowie dem Formparameter \(p > 0\) lautet die Gleichung:
+\begin{equation}
+    \left|{}\frac{x}{a}\right|{}^{p}+\left|{}\frac{y}{b}\right|{}^{p}=1
+\end{equation}
+
+Wenn wir einen Kreis betrachten, der sich einem Quadrat annähert (wie in deiner vorherigen Formel, bei der \(a = 1\) und \(b = 1\) gilt), vereinfacht sich der Ausdruck zu \(\left\vert{} x \right\vert{}^p + \left\vert{} y \right\vert{}^p = 1\).
+
+
+
+\subsubsection{Die Entscheidungsregel}
+
+Du setzt die Koordinaten deines Punktes \((x, y)\) in die linke Seite der Gleichung ein und berechnest den Wert:
+\begin{equation}
+    S = \left|{}\frac{x}{a}\right|{}^{p}+\left|{}\frac{y}{b}\right|{}^{p}
+\end{equation}
+
+Anhand des Ergebnisses \(S\) gilt folgende Regel:
+\begin{itemize}
+    \item \(S < 1\): Der Punkt liegt innerhalb der Lamé'schen Kurve.
+    \item \(S = 1\): Der Punkt liegt exakt auf dem Rand der Kurve.
+    \item \(S > 1\): Der Punkt liegt außerhalb der Kurve.
+\end{itemize}
+
+Ein konkretes Rechenbeispiel
+
+Wir nehmen die Kurve mit \(a = 1\), \(b = 1\) und dem Exponenten \(p = 4\) (eine bereits deutlich quadratische Superellipse).
+Frage: Liegt der Punkt \(P(0.8, \, 0.6)\) innerhalb dieser Kurve?
+
+\begin{equation}
+    S 
+    = 
+    \left|{}0.8\right|{}^{4}+\left|{}0.6\right|{}^{4}
+    =
+    0.4096+0.1296
+    =
+    0.5392
+\end{equation}
+
+Ergebnis: Da \(S = 0.5392 < 1\) ist, liegt der Punkt \(P(0.8, \, 0.6)\) innerhalb dieser Lamé'schen Kurve. (Interessanter Fakt: Da \(0.8^2 + 0.6^2 = 1\) gilt, läge dieser Punkt bei \(p=2\) exakt auf dem normalen Kreis – durch das Aufblähen zum Quadrat wandert er nun in das Innere).
+
+
+
+\begin{minted}[
+    bgcolor=gray!10,   % Grauer Hintergrundkasten
+    fontsize=\small,   % Angenehme Schriftgröße
+    breaklines         % Automatischer Zeilenumbruch
+]{python}  
+def bestimme_bereich(x, y, p=4):
+    """
+    Bestimmt die Farbe des Bereichs für einen Punkt (x, y) 
+    basierend auf zwei Lamé'schen Kurven (Superellipsen).
+    
+    Parameter:
+    x, y : Koordinaten des Punktes
+    p    : Formparameter der Kurve (Standard: 4 für die Quadrat-Annäherung)
+    """
+    # Absolutbeträge für die mathematische Korrektheit bei negativen Koordinaten
+    abs_x = abs(x)
+    abs_y = abs(y)
+    
+    # 1. Grüne Kurve prüfen: a = 50, b = 2
+    a_gruen, b_gruen = 50, 2
+    s_gruen = (abs_x / a_gruen)**p + (abs_y / b_gruen)**p
+    if s_gruen < 1:
+        return "grün"
+        
+    # 2. Gelbe Kurve prüfen: a = 65, b = 3
+    a_gelb, b_gelb = 65, 3
+    s_gelb = (abs_x / a_gelb)**p + (abs_y / b_gelb)**p
+    if s_gelb < 1:
+        return "gelb"
+        
+    # 3. Wenn der Punkt in keiner der beiden Kurven liegt
+    return "rot"
+
+# --- Beispiele zum Testen ---
+test_punkte = [
+    (10, 0.5),  # Liegt weit innerhalb von grün
+    (55, 1.0),  # Außerhalb von grün, aber innerhalb von gelb
+    (70, 5.0)   # Weit außerhalb von beiden Kurven
+]
+
+for x, y in test_punkte:
+    farbe = bestimme_bereich(x, y, p=4)
+    print(f"Punkt ({x}, {y}) ist im Bereich: {farbe}")
+  
+\end{minted}
