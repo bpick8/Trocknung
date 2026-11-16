@@ -13,16 +13,24 @@ mit
     \item  $p$ : Druck $\text{Pa} = \frac{\text{N}}{\text{m}^2} = \frac{J}{\text{m} \cdot \text{m}^2} = \frac{J}{\text{m}^3}$ 
     \item  $V$: Volumen in $\text{m}^3$ 
     \item  $n$: Stoffmenge in Mol 
-    \item  $R_{m}$: Gaskonstande 8,31446261815324 $\frac{\mathrm{J}}{\mathrm{mol} \ \mathrm{K}}$ 
+    \item  $R_{m}$: universelle (oder molare) Gaskonstante 8,31446261815324 $\frac{\mathrm{J}}{\mathrm{mol} \ \mathrm{K}}$ 
     \item  $T$: Termodynamische Temperatur in Kelvin 
     \item $\vartheta$: Termodynamische Temperatur in °C mit $T = 273{,}15 +  \vartheta$
     \item $\rho$ : Dichte in $\frac{\text{kg}}{\text{m}^3}$
 \end{itemize} 
-Für die Dampdichte $\rho_v$ folgt:
+
+Mit der molaren Massen $M$ eines Gases kann die Spezifische Gaskonstante $R_s$ berechnet werden. Für Wasserdampf gilt mit der molaren Masse $M_v = 18{,}01528\, \frac{\text{g}}{\text{mol}}$:
+\begin{equation}
+    R_v = \frac{R_m}{M_v} = 461{,}52\, \frac{\text{J}}{\text{kg}\,\text{K}} 
+\end{equation}
+
+
+Für die Dampdichte des Wasserdampfs $\rho_v$ in $\frac{\mathrm{kg}}{\mathrm{m^3}}$  folgt:
 \begin{equation}
     \rho_v = \frac{p}{R_v \cdot T}
 \end{equation}
-Mit der Gaskonstante für Wasserdampf: $R = 461,52\,\frac{\text{J}}{\text{kg}\,\text{K}}$ und Sättigungsdampfdruck $\rho(T)$ folgt für den Druck  $p$
+
+Mit dem Sättigungsdampfdruck $\rho(T)$ folgt für den Druck  $p$
 \begin{equation}
     p = \varphi \cdot \rho(T)
 \end{equation}
